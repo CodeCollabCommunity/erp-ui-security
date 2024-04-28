@@ -1,7 +1,14 @@
-import { MyComponent } from "./components/TestComponent";
+'use client'
+import React from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
-  return (
-   <MyComponent></MyComponent>
-  );
+
+  const router = useRouter()
+
+  React.useEffect(() => {
+    router.push('/login')
+  }, [])
+
+  return
 }
