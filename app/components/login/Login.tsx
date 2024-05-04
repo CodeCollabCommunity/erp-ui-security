@@ -7,6 +7,8 @@ import { Metadata } from "next";
 import { Formik, FormikHelpers, FormikValues } from 'formik';
 import { loginInitialValue, LoginValues } from '@/formik/InitialValues'
 import { validateLogin } from "@/formik/Validations";
+import axios from 'axios'
+
 
 export const metadata: Metadata = {
   title: "Next.js SignIn Page | TailAdmin - Next.js Dashboard Template",
@@ -20,13 +22,28 @@ export default function Login() {
     <>
       <Formik
         initialValues={loginInitialValue}
-        validate={validateLogin}
         onSubmit={(values, { setSubmitting }) => {
-          console.log("submit")
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+
+
+          console.log("send request")
+          axios.post('/api/v1/auth/login', values)
+            .then(function (response) {
+              // handle error
+              alert(response)
+              console.log(response);
+            })
+            .catch(function (error) {
+              // handle error
+              alert(error)
+              console.log(error);
+            })
+            .finally(function () {
+              // handle error
+              alert("fin")
+            }
+
+            )
+
         }}
       >
 
@@ -209,7 +226,7 @@ export default function Login() {
                           </label>
                           <div className="relative">
                             <input
-                              type="email"
+                              type="input"
                               name="email"
                               onChange={handleChange}
                               onBlur={handleBlur}
@@ -281,7 +298,7 @@ export default function Login() {
                         <div className="mb-5">
                           <button
                             type="submit"
-                            disabled={isSubmitting}
+                            // disabled={isSubmitting}
                             className="w-full cursor-pointer rounded-lg border border-primary bg-green-500 p-4 text-white transition hover:bg-opacity-90"
                           >
                             Sign In
