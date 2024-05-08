@@ -4,10 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/app/components/utils/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
-import { Formik, FormikHelpers, FormikValues } from 'formik';
-import { loginInitialValue, LoginValues } from '@/formik/InitialValues'
-import { validateLogin } from "@/formik/Validations";
-import axios from 'axios'
+import { Formik } from 'formik';
+import { loginInitialValue, LoginValues } from '@/app/components/login/formik/InitialValues'
+import { validateLogin } from "@/app/components/login/formik/Validations";
+import SecurityService from '@/app/components/login/services/SecurityService'
 
 
 export const metadata: Metadata = {
@@ -23,30 +23,15 @@ export default function Login() {
       <Formik
         initialValues={loginInitialValue}
         onSubmit={(values, { setSubmitting }) => {
-
-
-          console.log("send request")
-          axios.post('/api/v1/auth/login', values)
-            .then(function (response) {
-              // handle error
-              alert(response)
-              console.log(response);
-            })
-            .catch(function (error) {
-              // handle error
-              alert(error)
-              console.log(error);
-            })
-            .finally(function () {
-              // handle error
-              alert("fin")
-            }
-
-            )
-
+          const loginService = new SecurityService()
+          loginService.sendLogin(values).then((response) => {
+            alert('ok')
+            setSubmitting(false)
+          }).catch((error) => {
+            alert(error)
+          })
         }}
       >
-
         {({ values,
           errors,
           touched,
@@ -60,7 +45,6 @@ export default function Login() {
           <main>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
               <Breadcrumb pageName="Sign In" />
-
               <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="flex flex-wrap items-center">
                   <div className="hidden w-full xl:block xl:w-1/2">
@@ -81,7 +65,6 @@ export default function Login() {
                           height={32}
                         />
                       </Link>
-
                       <p className="2xl:px-20">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit
                         suspendisse.
@@ -298,7 +281,7 @@ export default function Login() {
                         <div className="mb-5">
                           <button
                             type="submit"
-                            // disabled={isSubmitting}
+                            disabled={isSubmitting}
                             className="w-full cursor-pointer rounded-lg border border-primary bg-green-500 p-4 text-white transition hover:bg-opacity-90"
                           >
                             Sign In

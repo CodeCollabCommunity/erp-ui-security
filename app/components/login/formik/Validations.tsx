@@ -1,4 +1,4 @@
-import { LoginValues } from '@/formik/InitialValues'; // Asegúrate de actualizar esta ruta
+import { LoginValues } from '@/app/components/login/formik/InitialValues'; // Asegúrate de actualizar esta ruta
 
 export function validateLogin(values: LoginValues) {
   const errors: LoginValues = { email: '', password: '' };
